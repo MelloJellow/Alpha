@@ -88,3 +88,22 @@ export const newMembers = [
         img: "https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg",
     },
 ]
+
+export const Book = [
+    {
+        
+        title: "JavaScript from Beginner to Professional",
+    authors: [
+        "Laurence Lars Svekis",
+        "Maaike van Putten",
+        "Rob Percival"
+    ],
+    publisher: "Packt Publishing",
+    publishedDate: "2021-12-15",
+    description: "Start your journey towards becoming a JavaScript developer with.Use logic statements to make decisions within your code* Save time with JavaScript loops by avoiding writing the same code repeatedly* Use JavaScript functions and methods to selectively execute code* Connect to HTML5 elements and bring your own web pages to life with interactive content* Make your search patterns more effective with regular expressions* Explore concurrency and asynchronous programming to process events efficiently and improve performance* Get a head start on your next steps with primers on key libraries, frameworks, and APIsWho this book is forThis book is for people who are new to JavaScript (JS) or those looking to build up their skills in web development. Basic familiarity with HTML & CSS would be beneficial.Whether you are a junior or intermediate developer who needs an easy-to-understand practical guide for JS concepts, a developer who wants to transition into working with JS, or a student studying programming concepts using JS, this book will prove helpful.",
+    thumbnail: "http://books.google.com/books/content?id=0hbUzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    isbn: "1800562527",
+    price: "$10",
+},
+    
+]

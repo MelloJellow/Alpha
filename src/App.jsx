@@ -7,10 +7,23 @@ import Cart from "./pages/Cart";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Chat from "./pages/Chat";
 import Admin from "./pages/Admin";
+import Search from "./pages/Search";
+import { ToastContainer } from "react-toastify";
+import Exchange from "./pages/Exchange";
 
 const App = () => {
   return(
    <Router>
+    {/* Toast Container (Global Notifications) */}
+    <ToastContainer
+      position="bottom-right"
+      autoClose={3000} // 3s auto close
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      pauseOnHover
+      draggable={false}
+    />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/admin" element={<Admin />} />
@@ -20,6 +33,8 @@ const App = () => {
       <Route path="/login" element={<Login />}/>
       <Route path="/register" element={<Register />}/>
       <Route path="/chat" element={<Chat />}/>
+      <Route path="/search" element={<Search />}/>
+      <Route path="/exchange" element={<Exchange />}/>
     </Routes>
   </Router>
   );

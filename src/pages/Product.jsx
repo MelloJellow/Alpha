@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import Announcement from "../components/Announcement";
+import { Book } from "../data";
 
 const Container = styled.div`
 
@@ -15,12 +16,19 @@ const Wrapper = styled.div`
 
 const ImgContainer = styled.div`
     flex:1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
    
 `;
 
 const Image = styled.img`
     width: 100%;
-    height: 50vh;
+    max-width: 100%;
+    height: auto;
     object-fit: cover;
     border-radius: 25px;
 `;
@@ -56,15 +64,12 @@ const Product = () => {
         <Announcement />
         <Wrapper>
             <ImgContainer>
-            <Image src="https://m.media-amazon.com/images/I/41DCnRxR07L._AC_UF894,1000_QL80_.jpg"/>
+            <Image src={Book[0].thumbnail} alt={Book.title}/>
             </ImgContainer>
             <InfoContainer>
-                <Title>Law Book</Title>
-                <Desc>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                    Exercitationem, obcaecati itaque placeat non accusantium vitae quo? Fugit, nihil tempora,
-                    aperiam error blanditiis quidem omnis ipsam corporis ratione ullam, explicabo impedit.
-                </Desc>
-                <Price>$ 10</Price>
+                <Title>{Book[0].title}</Title>
+                <Desc>{Book[0].description}</Desc>
+                <Price>{Book[0].price}</Price>
                 <FilterContainer>
                     <Filter></Filter>
                 </FilterContainer>

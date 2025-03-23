@@ -68,10 +68,12 @@ const Icon = styled.div`
 
 
 const Product = ({item}) => {
+    const imageUrl = item.imageLinks?.Thumbnail || item.imageUrl || "https://via.placeholder.com/150";
+
   return (
     <Container>
         <Circle/>
-        <Image src={item.img}/>
+        <Image src={imageUrl0}/>
         <Info>
             <Icon>
                 <ShoppingCartOutlined/>

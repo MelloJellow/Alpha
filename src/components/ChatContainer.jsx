@@ -6,63 +6,73 @@ import { getMessageRoute, sendMessageRoute } from "../utils/APIroute";
 import styled from "styled-components";
 
 
-export default function ChatContainer(props){
+export default function ChatContainer({ currentChat, socket }){
     const scrollRef = useRef();
     const [messages, setMessages] = useState([]);
     const [incoming, setIncoming] = useState(null);
 
-    const getAllMessages = async () => {
-        const user = JSON.parse(localStorage.getItem("chat-app-user"));
-        const res = await axios.post(getMessageRoute, {
-            from: user._id,
-            to: props.currentChat._id,
+    //Retrieve user once
+    const user = useRef(JSON.parse(localStorage.getItem("chat-app-user")));
+
+    const getAllMessages = (async () => {
+        if (!currentChat) return;
+        try{
+        const { data } = await axios.post(getMessageRoute, {
+            from: user.current._id,
+            to: currentChat._id,
         });
-        setMessages(res.data);
-    };
+        setMessages(data);
+    } catch (error){
+        console.error("Error fetching messages:", error);
+    }
+    }, [currentChat]);
 
     useEffect(() => {
-        if (props.currentChat){
-            getAllMessages();
-        }
-    },
-    //eslint-disable-next-line react-hooks/exhaustive-deps 
-    [props.currentChat]);
-
+        getAllMessages();         
+        }, [getAllMessages]);
+    
 
     const handleSend = async (msg) => {
-        const user = JSON.parse(localStorage.getItem("chat-app-user"));
+     try {
         await axios.post(sendMessageRoute, {
-            from: user._id,
-            to: props.currentChat._id,
+            from: user.current._id,
+            to: currentChat._id,
             message: msg,
         });
 
-        props.socket.current.emit("send-msg", {
-            to: props.currentChat._id,
-            from: user._id,
+        socket.current.emit("send-msg", {
+            to: currentChat._id,
+            from: user.current._id,
             message: msg,
         });
 
         setMessages((prev) => [...prev, { fromSelf: true, message: msg }]);
+     } catch (error){
+        console.error("Error sending message: ", error);
+     }
+  };
+
+  useEffect(() => {
+    if (!socket.current) return;
+
+    const handleMessageReceive = (msg) => {
+        setIncoming({ fromSelf: false, message: msg });
     };
 
-    useEffect(() => {
-        if (props.socket.current){
-            props.socket.current.on("msg-recieve", (msg) => {
-                setIncoming({ fromSelf: false, message: msg });
-            });
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    socket.current.on("msg-receive", handleMessageReceive);
 
-    useEffect(() =>{
-        if (incoming) setMessages((prev) => [...prev, incoming]);
-    }, [incoming]);
+    return () => {
+        socket.current.off("msg-recieve", handleMessageReceive);
+    };
+  }, [socket]);
 
-    useEffect(() =>{
-        scrollRef.current?.scrollIntoView({ behavior: "smooth"});
-    }, [messages]);
+  useEffect(() => {
+    if (incoming) setMessages((prev) => [...prev, incoming]);
+  }, [incoming]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth"});
+  }, [messages]);
 
     return (
         <>
@@ -70,14 +80,14 @@ export default function ChatContainer(props){
             <ChatHeader>
                 <UserDetails>
                     <Avatar>
-                        {props.currentChat.avatarImage ? (
-                            <img src={props.currentChat.avatarImage} alt="" />
+                        {currentChat.avatarImage ? (
+                            <img src={currentChat.avatarImage} alt="" />
                         ) : (
                             <toPersonCircle />
                         )}
                     </Avatar>
                     <Username>
-                        <h3>{props.currentChat.username}</h3>
+                        <h3>{currentChat.username}</h3>
                     </Username>
                 </UserDetails>
             </ChatHeader>

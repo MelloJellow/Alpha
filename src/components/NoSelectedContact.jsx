@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
-function NoSelectedContact(){
+function NoSelectedContact() {
     const [user, setUser] = useState("");
-    const getUser = ()=>{
-        const existing = localStorage.getItem('chat-app-user');
-        console.log(user);
-        if(existing){
-            setUser(existing);
-            console.log(user);
+
+    const getUser = useCallback(() => {
+        const existing = localStorage.getItem("chat-app-user");
+        if (existing){
+            const parsedUser = JSON.parse(existing);
+            setUser(parsedUser.username);
         }
-    }
+    }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         getUser();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-[])
+    }, [getUser]);
 
-return(
-    <Container>
-        <h1>
-            Welcome!
-        </h1>
-        <h3> Please select a chat to start messaging!</h3>
-    </Container>
-)
+    return (
+        <Container>
+            <h1>Welcome {user ? user : "!"}</h1>
+            <h3>Please select a chat to start messaging!</h3>
+        </Container>
+    );
 }
 
 const Container = styled.div`
@@ -34,12 +30,6 @@ const Container = styled.div`
     align-items: center;
     color: #128c7e;
     flex-direction: column;
-    img {
-        height: 20rem;
-    }
-    span {
-        color: #4e0eff;
-    }
 `;
 
-export default NoSelectedContact
+export default NoSelectedContact;

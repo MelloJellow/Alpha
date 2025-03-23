@@ -1,24 +1,26 @@
 import styled from "styled-components";
-import { popularProducts } from "../data";
 import Product from "./Product";
-
-
+import { CatalogueRoute } from "../utils/APIroute";
 const Container = styled.div`
-    padding: 20px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
 `;
 
-const Products = () => {
-  return (
-    <Container>
-    {popularProducts.map(item=>(
-        <Product item={item} key={item.id} />
-    ))}
-</Container>
-)
-  
-}
+const Products = ({ books }) => {
+    if (!books || books.length === 0) {
+        return <h2>No books available</h2>;
+    }
 
-export default Products
+    return (
+        <Container>
+            {books.map((book) => (
+                <Product key={book._id} item={book} />
+            ))}
+        </Container>
+    );
+};
+
+export default Products;
